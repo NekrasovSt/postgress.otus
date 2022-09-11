@@ -128,3 +128,123 @@ Bitmap Heap Scan on flights f  (cost=3.28..161.76 rows=184 width=63)
 
 Без индекса запрос выполняется с использованием Sec scan, а с индексом разновидности Index Scan что существенно быстрей.
 
+## **Написания запросов с различными типами соединений.**
+
+### **Реализовать прямое соединение двух или более таблиц**
+
+Выберем все места для всех самолетов.
+```
+select a.aircraft_code, model, seat_no from bookings.aircrafts a
+inner join bookings.seats s on a.aircraft_code = s.aircraft_code;
+```
+
+```
+aircraft_code|model          |seat_no|
+-------------+---------------+-------+
+319          |Airbus A319-100|2A     |
+319          |Airbus A319-100|2C     |
+319          |Airbus A319-100|2D     |
+319          |Airbus A319-100|2F     |
+319          |Airbus A319-100|3A     |
+319          |Airbus A319-100|3C     |
+319          |Airbus A319-100|3D     |
+319          |Airbus A319-100|3F     |
+319          |Airbus A319-100|4A     |
+319          |Airbus A319-100|4C     |
+319          |Airbus A319-100|4D     |
+319          |Airbus A319-100|4F     |
+319          |Airbus A319-100|5A     |
+319          |Airbus A319-100|5C     |
+319          |Airbus A319-100|5D     |
+319          |Airbus A319-100|5F     |
+319          |Airbus A319-100|6A     |
+319          |Airbus A319-100|6B     |
+319          |Airbus A319-100|6C     |
+...
+```
+### **Реализовать левостороннее (или правостороннее) соединение двух или более таблиц**
+
+Выберем все рейсы которые отправляются из аэропортов.
+
+```
+select airport_code, airport_name, flight_no  from bookings.airports a 
+left join bookings.flights f on a.airport_code = f.departure_airport  
+```
+```
+airport_code|airport_name|flight_no|
+------------+------------+---------+
+DME         |Домодедово  |PG0405   |
+DME         |Домодедово  |PG0404   |
+DME         |Домодедово  |PG0405   |
+DME         |Домодедово  |PG0402   |
+DME         |Домодедово  |PG0405   |
+DME         |Домодедово  |PG0404   |
+DME         |Домодедово  |PG0403   |
+DME         |Домодедово  |PG0402   |
+DME         |Домодедово  |PG0405   |
+DME         |Домодедово  |PG0402   |
+DME         |Домодедово  |PG0403   |
+DME         |Домодедово  |PG0404   |
+DME         |Домодедово  |PG0405   |
+DME         |Домодедово  |PG0402   |
+DME         |Домодедово  |PG0402   |
+DME         |Домодедово  |PG0403   |
+DME         |Домодедово  |PG0404   |
+DME         |Домодедово  |PG0405   |
+DME         |Домодедово  |PG0403   |
+...
+```
+### **Реализовать кросс соединение двух или более таблиц**
+
+Найдем все комбинации аэропортов вылет/посадка.
+
+```
+select a1.airport_code, a2.airport_code from bookings.airports a1
+cross join bookings.airports a2 
+where a1 <> a2
+```
+```
+airport_code|airport_code|
+------------+------------+
+MJZ         |NBC         |
+MJZ         |NOZ         |
+MJZ         |NAL         |
+MJZ         |OGZ         |
+MJZ         |CSY         |
+MJZ         |NYM         |
+MJZ         |NYA         |
+MJZ         |URS         |
+MJZ         |SKX         |
+MJZ         |TBW         |
+MJZ         |OVS         |
+MJZ         |IJK         |
+MJZ         |SLY         |
+MJZ         |HMA         |
+MJZ         |RGK         |
+MJZ         |UKX         |
+MJZ         |GDZ         |
+MJZ         |NFG         |
+MJZ         |VKT         |
+MJZ         |KJA         |
+...
+```
+
+### **Реализовать полное соединение двух или более таблиц**
+
+Найдем самолеты без рейсов или рейсы без самолетов.
+```
+select a.aircraft_code, model, flight_no from bookings.aircrafts a
+full join bookings.flights f on a.aircraft_code = f.aircraft_code
+where flight_no is null or a.aircraft_code is null
+```
+```
+aircraft_code|model          |flight_no|
+-------------+---------------+---------+
+320          |Airbus A320-200|         |
+```
+
+
+
+
+
+
