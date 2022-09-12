@@ -31,7 +31,7 @@ Index Scan using idx_flights_status on flights f  (cost=0.29..689.53 rows=16681 
 
 ### **Реализовать индекс для полнотекстового поиска**
 
-Найдем все ивановых.
+Найдем всех ивановых.
 
 ```
 explain
@@ -41,7 +41,7 @@ Seq Scan on tickets t  (cost=0.00..10728.16 rows=22855 width=104)
   Filter: (passenger_name ~~* '%ivanov%'::text)                  
 ```
 
-Добавим поле
+Добавим поле tsvector
 
 ```
 alter table bookings.tickets add column fio tsvector;
@@ -243,8 +243,36 @@ aircraft_code|model          |flight_no|
 320          |Airbus A320-200|         |
 ```
 
+### **Реализовать запрос, в котором будут использованы разные типы соединений**
 
 
+Для пассажиров, которые летали бизнес классом, предложить самолеты в которых есть бизнес класс, но они не летали на них.
 
-
+```
+select t.passenger_id, t.passenger_name, x.aircraft_code, x.model 
+from bookings.tickets t
+left join bookings.ticket_flights tf on t.ticket_no = tf.ticket_no 
+left join bookings.flights f on f.flight_id = tf.flight_id,
+LATERAL  (
+			select distinct ai.aircraft_code, ai.model from bookings.aircrafts ai 
+			join bookings.seats s on s.aircraft_code = ai.aircraft_code
+			where s.fare_conditions = 'Business' and ai.aircraft_code not in (f.aircraft_code)
+       ) AS x
+where tf.fare_conditions = 'Business'  
+```
+```
+4849 400049	ALINA VOLKOVA	321	Airbus A321-200
+4849 400049	ALINA VOLKOVA	773	Boeing 777-300
+4849 400049	ALINA VOLKOVA	320	Airbus A320-200
+4849 400049	ALINA VOLKOVA	319	Airbus A319-100
+4849 400049	ALINA VOLKOVA	763	Boeing 767-300
+4849 400049	ALINA VOLKOVA	733	Boeing 737-300
+6615 976589	MAKSIM ZHUKOV	321	Airbus A321-200
+6615 976589	MAKSIM ZHUKOV	773	Boeing 777-300
+6615 976589	MAKSIM ZHUKOV	320	Airbus A320-200
+6615 976589	MAKSIM ZHUKOV	319	Airbus A319-100
+6615 976589	MAKSIM ZHUKOV	763	Boeing 767-300
+6615 976589	MAKSIM ZHUKOV	733	Boeing 737-300
+...
+```
 
