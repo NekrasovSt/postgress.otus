@@ -1,0 +1,10 @@
+---
+# handlers file for etcd
+- name: restart etcd
+  systemd:
+    name: etcd
+    state: restarted
+- name: daemon reload
+  systemd:
+    name: etcd
+    state: reloaded

@@ -1,0 +1,26 @@
+---
+# tasks file for etcd
+- name: Install etcd
+  ansible.builtin.apt:
+    name: etcd
+    state: present
+- name: "Create directory for etcd configuration"
+  file:
+    path: /etc/etcd
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+- name: Copy etcd.conf
+  template:
+    src: etcd.yml.j2
+    dest: /etc/etcd/etcd.yml
+  notify: restart etcd
+
+- name: Copy etcd.service
+  template:
+    src: etcd.service.j2
+    dest: /lib/systemd/system/etcd.service
+  notify:
+    - daemon reload
+    - restart etcd

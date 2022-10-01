@@ -1,0 +1,3 @@
+---
+# vars file for etcd
+etcd_cluster: dbproxy=http://10.129.0.18:2380,db1=http://10.129.0.25:2380
