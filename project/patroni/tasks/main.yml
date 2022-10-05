@@ -1,0 +1,24 @@
+---
+# tasks file for patroni
+- name: Install patroni
+  ansible.builtin.apt:
+    name: patroni
+    state: present
+- name: "Create directory for data"
+  file:
+    path: /var/lib/pgsql
+    state: directory
+    owner: postgres
+    group: postgres
+    mode: 0700
+
+- name: Copy patroni.conf
+  template:
+    src: config.yml.j2
+    dest: /etc/patroni/config.yml
+  notify:
+    - restart patroni
+- name: start patroni
+  systemd:
+    name: patroni
+    enabled: yes

@@ -1,0 +1,7 @@
+---
+# handlers file for patroni
+- name: restart patroni
+  systemd:
+    name: patroni
+    state: restarted
+    enabled: yes

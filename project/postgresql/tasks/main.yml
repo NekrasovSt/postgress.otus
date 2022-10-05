@@ -17,6 +17,7 @@
       - wget
       - python3-psycopg2
       - acl
+      - postgresql-contrib
     state: latest
 - name: Set up Postgres 14 repo
   shell: |
@@ -30,3 +31,8 @@
   apt:
     name: postgresql-14
     update_cache: yes
+- name: stop postgres
+  systemd:
+    name: postgresql
+    state: stopped
+    enabled: false

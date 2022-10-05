@@ -23,3 +23,15 @@ bar
 root@dbproxy:/home/snekrasov# etcdctl ls
 /foo
 ```
+
+## **Проверка patroni кластера**
+
+```
+root@db2:/home/snekrasov# patronictl -c /etc/patroni/config.yml  list
++ Cluster: postgres (7151059579343117417) -+----+-----------+
+| Member | Host        | Role    | State   | TL | Lag in MB |
++--------+-------------+---------+---------+----+-----------+
+| db1    | 10.129.0.25 | Leader  | running |  1 |           |
+| db2    | 10.129.0.6  | Replica | running |  1 |         0 |
++--------+-------------+---------+---------+----+-----------+
+```

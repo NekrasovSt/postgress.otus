@@ -6,3 +6,4 @@
   become: True
   roles:
     - postgresql
+    - patroni
