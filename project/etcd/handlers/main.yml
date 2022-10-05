@@ -1,5 +1,13 @@
 ---
 # handlers file for etcd
+- name: stop service
+  systemd:
+    name: etcd
+    state: stopped
+- name: drop cluster
+  file:
+    path: /var/lib/etcd/default.etcd
+    state: absent
 - name: restart etcd
   systemd:
     name: etcd

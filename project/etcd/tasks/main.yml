@@ -15,12 +15,17 @@
   template:
     src: etcd.yml.j2
     dest: /etc/etcd/etcd.yml
-  notify: restart etcd
+  notify:
+    - stop service
+    - drop cluster
+    - restart etcd
 
 - name: Copy etcd.service
   template:
     src: etcd.service.j2
     dest: /lib/systemd/system/etcd.service
   notify:
+    - stop service
+    - drop cluster
     - daemon reload
     - restart etcd

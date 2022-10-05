@@ -15,7 +15,8 @@ User=etcd
 PermissionsStartOnly=true
 ExecStart=/usr/bin/etcd --config-file /etc/etcd/etcd.yml
 Restart=always
-#RestartSec=10s
+RestartSec=10s
+StartLimitInterval=5
 LimitNOFILE=65536
 
 [Install]

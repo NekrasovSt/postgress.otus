@@ -2,3 +2,7 @@
   become: True
   roles:
     - etcd
+- hosts: dbs
+  become: True
+  roles:
+    - postgresql
