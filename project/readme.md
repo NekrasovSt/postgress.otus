@@ -35,3 +35,6 @@ root@db2:/home/snekrasov# patronictl -c /etc/patroni/config.yml  list
 | db2    | 10.129.0.6  | Replica | running |  1 |         0 |
 +--------+-------------+---------+---------+----+-----------+
 ```
+## **Проверка haproxy**
+
+Веб доступен http://{dbproxy}:7000

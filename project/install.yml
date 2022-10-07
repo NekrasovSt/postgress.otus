@@ -7,3 +7,7 @@
   roles:
     - postgresql
     - patroni
+- hosts: dbproxy
+  become: True
+  roles:
+    - haproxy
