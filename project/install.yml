@@ -11,3 +11,4 @@
   become: True
   roles:
     - haproxy
+    - pgbouncer

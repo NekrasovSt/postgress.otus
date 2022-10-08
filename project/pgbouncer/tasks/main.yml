@@ -1,0 +1,32 @@
+---
+# tasks file for pgbouncer
+- name: Set up PgBouncer repo
+  shell: |
+    sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+    wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
+    apt update
+    touch ~/add-pb-bouncer-key
+  args:
+    warn: no
+    creates: ~/add-pb-bouncer-key
+
+- name: Install pgbouncer
+  ansible.builtin.apt:
+    name: pgbouncer
+    state: present
+
+- name: Copy pgbouncer.ini
+  template:
+    src: pgbouncer.ini.j2
+    dest: /etc/pgbouncer/pgbouncer.ini
+    owner: postgres
+  notify:
+    - restart pgbouncer
+
+- name: Copy userlist.txt
+  template:
+    src: userlist.txt.j2
+    dest: /etc/pgbouncer/userlist.txt
+    owner: postgres
+  notify:
+    - restart pgbouncer

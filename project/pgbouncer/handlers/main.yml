@@ -1,0 +1,7 @@
+---
+# handlers file for pgbouncer
+- name: restart pgbouncer
+  systemd:
+    name: pgbouncer
+    state: restarted
+    enabled: yes

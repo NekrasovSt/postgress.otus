@@ -38,3 +38,23 @@ root@db2:/home/snekrasov# patronictl -c /etc/patroni/config.yml  list
 ## **Проверка haproxy**
 
 Веб доступен http://{dbproxy}:7000
+
+## **Проверка PgBouncer**
+```postgresql
+psql -h localhost -p 6432 -U postgres -W -d pgbouncer
+```
+```postgresql
+pgbouncer=# SHOW CLIENTS;
+ type |   user   | database  | state  |   addr    | port  | local_addr | local_port |      connect_time       |      request_time       | wait | wait_us | close_needed |      ptr       | link | remote_pid | tls 
+------+----------+-----------+--------+-----------+-------+------------+------------+-------------------------+-------------------------+------+---------+--------------+----------------+------+------------+-----
+ C    | postgres | pgbouncer | active | 127.0.0.1 | 41664 | 127.0.0.1  |       6432 | 2022-10-08 14:00:37 UTC | 2022-10-08 14:01:30 UTC |   48 |  217284 |            0 | 0x556bba41f440 |      |          0 | 
+(1 row)
+
+pgbouncer=# SHOW POOLS;
+ database  |   user    | cl_active | cl_waiting | cl_cancel_req | sv_active | sv_idle | sv_used | sv_tested | sv_login | maxwait | maxwait_us | pool_mode 
+-----------+-----------+-----------+------------+---------------+-----------+---------+---------+-----------+----------+---------+------------+-----------
+ pgbouncer | pgbouncer |         1 |          0 |             0 |         0 |       0 |       0 |         0 |        0 |       0 |          0 | statement
+(1 row)
+
+```
+
