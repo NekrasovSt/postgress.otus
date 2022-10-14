@@ -1,0 +1,42 @@
+---
+# tasks file for yandex tank
+- name: Install required system packages
+  apt:
+    name: '{{item}}'
+    state: latest
+    update_cache: yes
+  loop:
+    - 'apt-transport-https'
+    - 'ca-certificates'
+    - 'curl'
+    - 'software-properties-common'
+
+- name: Add Docker GPG apt key
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+- name: Add Docker Repository
+  apt_repository:
+    repo: deb https://download.docker.com/linux/ubuntu focal stable
+    state: present
+
+- name: Update apt and install docker-ce, docker-ce-cli, containerd.io
+  apt:
+    update_cache: yes
+    name: '{{item}}'
+    state: latest
+  loop:
+    - 'docker-ce'
+    - 'docker-ce-cli'
+    - 'containerd.io'
+
+- name: Create folder for tank
+  file:
+    path: /var/yandex.tank
+    state: directory
+
+- name: Copy config tank
+  template:
+    src: load.yml.j2
+    dest: /var/yandex.tank

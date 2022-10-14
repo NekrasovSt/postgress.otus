@@ -12,3 +12,5 @@
   roles:
     - haproxy
     - pgbouncer
+    - yandex.tank
+
