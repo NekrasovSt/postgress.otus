@@ -38,5 +38,10 @@
 
 - name: Copy config tank
   template:
-    src: load.yml.j2
-    dest: /var/yandex.tank
+    src: load.yaml.j2
+    dest: /var/yandex.tank/load.yaml
+
+- name: Copy token
+  template:
+    src: token.txt.j2
+    dest: /var/yandex.tank/token.txt

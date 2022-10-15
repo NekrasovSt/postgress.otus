@@ -3,17 +3,18 @@ overload:
   package: yandextank.plugins.DataUploader
   token_file: "token.txt"
 phantom:
-  address: www.rambler.ru:443
+  address: {{ hostvars['dbproxy'].ansible_host }}
   header_http: "1.1"
-  headers:
-    - "[Host: www.rambler.ru]"
-    - "[Connection: close]"
   uris:
-    - /
-    - /sport/
+    - /api/author
+    - /api/book
+    - /api/book?size=10&page=3
+    - /api/book?size=10&page=99
   load_profile:
     load_type: rps
-    schedule: line(5, 30, 1m)
+    schedule: line(5, 30, 1m) step(30,90,5,5s)
+  instances: 10
+  phantom_http_entity: 30M
   ssl: true
 autostop:
   autostop:

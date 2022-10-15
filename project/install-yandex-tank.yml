@@ -1,0 +1,4 @@
+- hosts: dbproxy
+  become: True
+  roles:
+    - yandex.tank
