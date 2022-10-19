@@ -45,3 +45,7 @@
   template:
     src: token.txt.j2
     dest: /var/yandex.tank/token.txt
+- name: Copy ammo
+  template:
+    src: ammo.txt.j2
+    dest: /var/yandex.tank/ammo.txt

@@ -4,21 +4,19 @@ overload:
   token_file: "token.txt"
 phantom:
   address: {{ hostvars['dbproxy'].ansible_host }}
+  ammofile: ammo.txt
   header_http: "1.1"
-  uris:
-    - /api/author
-    - /api/book
-    - /api/book?size=10&page=3
-    - /api/book?size=10&page=99
+  ammo_type: uri
   load_profile:
     load_type: rps
     schedule: line(5, 30, 1m) step(30,90,5,5s)
   instances: 10
   phantom_http_entity: 30M
-  ssl: true
+  ssl: false
 autostop:
   autostop:
     - http(5xx,10%,5s)
+    - http(4xx,10%,5s)
 console:
   enabled: true
 telegraf:
