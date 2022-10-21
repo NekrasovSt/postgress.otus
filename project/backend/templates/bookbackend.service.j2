@@ -1,0 +1,15 @@
+[Unit]
+Description=backend service - library
+After=network.target
+Wants=network-online.target
+
+
+[Service]
+User=bookbackend
+PermissionsStartOnly=true
+WorkingDirectory=/var/bookbackend
+ExecStart=/var/bookbackend/BookBase
+Restart=always
+RestartSec=10s
+StartLimitInterval=5
+LimitNOFILE=65536

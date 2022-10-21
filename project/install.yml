@@ -13,4 +13,5 @@
     - haproxy
     - pgbouncer
     - yandex.tank
+    - backend
 

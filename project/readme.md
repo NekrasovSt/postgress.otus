@@ -72,3 +72,8 @@ database  |   user    | cl_active | cl_waiting | cl_cancel_req | sv_active | sv_
 - /api/book?size={s}&page={p}
 - /api/author
 - /api/author/{id}
+
+## **Запуск тарка**
+```
+docker run --rm -v /var/yandex.tank:/var/loadtest -it direvius/yandex-tank
+```

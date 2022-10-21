@@ -1,0 +1,26 @@
+---
+# tasks file for backend
+- name: Create group
+  group:
+    name: bookbackend
+    state: present
+
+- name: Create user for service
+  ansible.builtin.user:
+    name: bookbackend
+    group: bookbackend
+    state: present
+    create_home: no
+
+- name: "Create directory for backend"
+  file:
+    path: /var/bookbackend
+    state: directory
+    owner: bookbackend
+    group: bookbackend
+    mode: 0755
+
+- name: Copy bookbackend.service
+  template:
+    src: bookbackend.service.j2
+    dest: /lib/systemd/system/bookbackend.service

@@ -3,7 +3,7 @@ overload:
   package: yandextank.plugins.DataUploader
   token_file: "token.txt"
 phantom:
-  address: {{ hostvars['dbproxy'].ansible_host }}
+  address: {{ hostvars['dbproxy'].ansible_host }}:8080
   ammofile: ammo.txt
   header_http: "1.1"
   ammo_type: uri
