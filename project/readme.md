@@ -34,6 +34,17 @@ root@db2:/home/snekrasov# patronictl -c /etc/patroni/config.yml  list
 | db1    | 10.129.0.25 | Leader  | running |  1 |           |
 | db2    | 10.129.0.6  | Replica | running |  1 |         0 |
 +--------+-------------+---------+---------+----+-----------+
+
+root@db1:/home/snekrasov# patronictl -c /etc/patroni/config.yml reload postgres
++ Cluster: postgres (7151059579343117417) -+----+-----------+
+| Member | Host        | Role    | State   | TL | Lag in MB |
++--------+-------------+---------+---------+----+-----------+
+| db1    | 10.129.0.25 | Replica | running | 12 |         0 |
+| db2    | 10.129.0.6  | Leader  | running | 12 |           |
++--------+-------------+---------+---------+----+-----------+
+Are you sure you want to reload members db2, db1? [y/N]: y
+Reload request received for member db2 and will be processed within 10 seconds
+
 ```
 
 ## **Проверка haproxy**
