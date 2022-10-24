@@ -1,0 +1,24 @@
+---
+# tasks file for postgres monitoring
+- name: Download And Unzipped postgres exporter
+  unarchive:
+    src: https://github.com/wrouesnel/postgres_exporter/releases/download/v{{version}}/postgres_exporter_v{{version}}linux-amd64.tar.gz
+    dest: /tmp/postgres_exporter
+    creates: /tmp/postgres_exporter/postgres_exporter-{{ version }}.linux-amd64
+    remote_src: yes
+
+- name: Copy Bin Files From Unzipped to Node exporter
+  copy:
+    src: /tmp/node_exporter/postgres_exporter-{{ version }}.linux-amd64/postgres_exporter
+    dest: /usr/local/bin/
+    remote_src: yes
+    mode: preserve
+    owner: postgres
+    group: postgres
+
+- name: Create File for Postgres exporter Systemd
+  copy:
+    src: postgres_exporter.service
+    dest: /etc/systemd/system/
+  notify:
+    - systemd reload

@@ -1,0 +1,7 @@
+---
+# handlers file for postgres_exporter
+- name: systemd reload
+  systemd:
+    name: postgres_exporter
+    state: restarted
+    enabled: yes
