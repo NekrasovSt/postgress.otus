@@ -1,0 +1,101 @@
+---
+- name: Create User prometheus
+  user:
+    name: prometheus
+    create_home: no
+    shell: /bin/false
+
+- name: Create directories for prometheus
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: prometheus
+    group: prometheus
+  loop:
+    - '/tmp/prometheus'
+    - '/etc/prometheus'
+    - '/var/lib/prometheus'
+
+- name: Download And Unzipped Prometheus
+  unarchive:
+    src: https://github.com/prometheus/prometheus/releases/download/v{{ prometheus_version }}/prometheus-{{ prometheus_version }}.linux-amd64.tar.gz
+    dest: /tmp/prometheus
+    creates: /tmp/prometheus/prometheus-{{ prometheus_version }}.linux-amd64
+    remote_src: yes
+
+- name: Copy Bin Files From Unzipped to Prometheus
+  copy:
+    src: /tmp/prometheus/prometheus-{{ prometheus_version }}.linux-amd64/{{ item }}
+    dest: /usr/local/bin/
+    remote_src: yes
+    mode: preserve
+    owner: prometheus
+    group: prometheus
+  loop: [ 'prometheus', 'promtool' ]
+
+- name: Copy Conf Files From Unzipped to Prometheus
+  copy:
+    src: /tmp/prometheus/prometheus-{{ prometheus_version }}.linux-amd64/{{ item }}
+    dest: /etc/prometheus/
+    remote_src: yes
+    mode: preserve
+    owner: prometheus
+    group: prometheus
+  loop: [ 'console_libraries', 'consoles' ]
+
+- name: Copy Conf Prometheus
+  copy:
+    src: prometheus.yml
+    dest: /etc/prometheus/
+    mode: preserve
+    owner: prometheus
+    group: prometheus
+  notify:
+    - prometheus reload
+
+- name: Create File for Prometheus Systemd
+  copy:
+    src: prometheus.service
+    dest: /etc/systemd/system/
+
+- name: Systemctl Prometheus Start
+  systemd:
+    name: prometheus
+    state: started
+    enabled: yes
+- name: Install required packages
+  apt:
+    name:
+      - wget
+      - python3-psycopg2
+      - acl
+      - postgresql-contrib
+    state: latest
+
+- name: Set up Postgres 14 repo
+  shell: |
+    wget -q -O - https://packages.grafana.com/gpg.key | apt-key add -
+    add-apt-repository "deb https://packages.grafana.com/oss/deb stable main"
+    apt-get update
+    touch ~/add-key-grafana
+  args:
+    warn: no
+    creates: ~/add-key-grafana
+
+- name: Install Grafana
+  apt:
+    name:
+      - software-properties-common
+      - apt-transport-https
+      - grafana
+    state: latest
+
+- name: Copy Conf Grafana
+  copy:
+    src: grafana.yml
+    dest: /etc/grafana/provisioning/datasources/prometheus.yml
+    mode: preserve
+    owner: grafana
+    group: grafana
+  notify:
+    - grafana reload
