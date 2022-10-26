@@ -7,6 +7,7 @@
   roles:
     - postgresql
     - patroni
+    - postgres_monitoring
 - hosts: dbproxy
   become: True
   roles:
@@ -14,4 +15,5 @@
     - pgbouncer
     - yandex.tank
     - backend
+    - monitoring
 

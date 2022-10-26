@@ -88,3 +88,5 @@ database  |   user    | cl_active | cl_waiting | cl_cancel_req | sv_active | sv_
 ```
 docker run --rm -v /var/yandex.tank:/var/loadtest -it direvius/yandex-tank
 ```
+## **Проверка postgres exporter**
+http://{dbip}:9187
