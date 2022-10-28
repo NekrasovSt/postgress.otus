@@ -84,9 +84,15 @@ database  |   user    | cl_active | cl_waiting | cl_cancel_req | sv_active | sv_
 - /api/author
 - /api/author/{id}
 
-## **Запуск тарка**
+## **Запуск танка**
 ```
 docker run --rm -v /var/yandex.tank:/var/loadtest -it direvius/yandex-tank
 ```
 ## **Проверка postgres exporter**
 http://{dbip}:9187
+
+## **Проверка Prometheus**
+http://{dbproxy}:9090/targets
+
+## **Grafana**
+http://51.250.96.91:3000

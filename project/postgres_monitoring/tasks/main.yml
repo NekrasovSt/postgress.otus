@@ -29,8 +29,8 @@
 
 
 - name: Create File for Postgres exporter Systemd
-  copy:
-    src: postgres_exporter.service
-    dest: /etc/systemd/system/
+  template:
+    src: postgres_exporter.service.j2
+    dest: /etc/systemd/system/postgres_exporter.service
   notify:
     - systemd reload

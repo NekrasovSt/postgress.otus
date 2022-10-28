@@ -7,7 +7,7 @@ Type=simple
 Restart=always
 User=postgres
 Group=postgres
-Environment=DATA_SOURCE_NAME="postgresql://postgres:postgres@localhost:5432?sslmode=disable"
-ExecStart=/usr/local/bin/postgres_exporter
+Environment=DATA_SOURCE_NAME="postgresql://postgres:postgres@{{ ip }}:5432/?sslmode=disable"
+ExecStart=/usr/local/bin/postgres_exporter --auto-discover-databases
 [Install]
 WantedBy=multi-user.target

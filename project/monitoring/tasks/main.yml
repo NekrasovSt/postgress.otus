@@ -44,9 +44,9 @@
   loop: [ 'console_libraries', 'consoles' ]
 
 - name: Copy Conf Prometheus
-  copy:
-    src: prometheus.yml
-    dest: /etc/prometheus/
+  template:
+    src: prometheus.yml.j2
+    dest: /etc/prometheus/prometheus.yml
     mode: preserve
     owner: prometheus
     group: prometheus
@@ -63,24 +63,6 @@
     name: prometheus
     state: started
     enabled: yes
-- name: Install required packages
-  apt:
-    name:
-      - wget
-      - python3-psycopg2
-      - acl
-      - postgresql-contrib
-    state: latest
-
-- name: Set up Postgres 14 repo
-  shell: |
-    wget -q -O - https://packages.grafana.com/gpg.key | apt-key add -
-    add-apt-repository "deb https://packages.grafana.com/oss/deb stable main"
-    apt-get update
-    touch ~/add-key-grafana
-  args:
-    warn: no
-    creates: ~/add-key-grafana
 
 - name: Install Grafana
   apt:
@@ -99,3 +81,9 @@
     group: grafana
   notify:
     - grafana reload
+
+- name: grafana reload
+  systemd:
+    name: grafana-server
+    state: started
+    enabled: yes
