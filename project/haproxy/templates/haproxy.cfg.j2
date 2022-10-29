@@ -31,5 +31,5 @@ listen postgres
     option httpchk
     http-check expect status 200
     default-server inter 3s fall 3 rise 2 on-marked-down shutdown-sessions
-    server db1 10.129.0.25:5432 maxconn 1000 check port 8008
-    server db2 10.129.0.6:5432 maxconn 1000 check port 8008
+    server db1 {{ hostvars['db1'].ip }}:5432 maxconn 1000 check port 8008
+    server db2 {{ hostvars['db2'].ip }}:5432 maxconn 1000 check port 8008

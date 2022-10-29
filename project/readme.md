@@ -46,6 +46,10 @@ Are you sure you want to reload members db2, db1? [y/N]: y
 Reload request received for member db2 and will be processed within 10 seconds
 
 ```
+На случай ошибки
+```
+patronictl -c /etc/patroni/config.yml  reinit postgres
+```
 
 ## **Проверка haproxy**
 
@@ -73,6 +77,10 @@ database  |   user    | cl_active | cl_waiting | cl_cancel_req | sv_active | sv_
 (1 row)
 
 ```
+Посмотреть хэши паролей
+```
+SELECT pg_shadow.usename,  passwd FROM pg_shadow;
+```
 
 ## **Api для тестов**
 
@@ -95,4 +103,4 @@ http://{dbip}:9187
 http://{dbproxy}:9090/targets
 
 ## **Grafana**
-http://51.250.96.91:3000
+http://{dbproxy}:3000

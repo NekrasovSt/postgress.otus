@@ -7,7 +7,7 @@ restapi:
   connect_address: {{ ip }}:8008
 
 etcd:
-  host: 10.129.0.36:2379
+  hosts: {{ hostvars['dbproxy'].ip }}:2379,{{ hostvars['db1'].ip }}:2379,{{ hostvars['db2'].ip }}:2379
 
 bootstrap:
   dcs:
