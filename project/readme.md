@@ -104,3 +104,7 @@ http://{dbproxy}:9090/targets
 
 ## **Grafana**
 http://{dbproxy}:3000
+
+## **Презентация**
+https://docs.google.com/presentation/d/11LtWWsWzv6LFDjcztFjEUOieDKW4OxSQ2W0sN9Ofp8g/edit#slide=id.g5dfdcf0df5_0_16
+![](postgres.png)
